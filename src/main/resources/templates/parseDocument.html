@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>中憬科技集团有限公司</title>
+    <!-- 如果是 .png -->
+    <link rel="icon" type="image/png" th:href="@{/images/zjkj.png}" />
+<!--    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">-->
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            /*background: #f0f4f8;*/
+            color: #333;
+
+            font-family: 'Inter', sans-serif;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            background-image: url('/images/dwh111.jpg'); /* 背景图片路径 */
+            background-size: cover;       /* 填充整个页面 */
+            background-repeat: no-repeat; /* 不重复 */
+            background-position: center;  /* 居中显示 */
+        }
+
+        .container {
+            width: 380px;
+            background: #ffffff;
+            padding: 32px 24px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            text-align: center;
+            /* 保持透明，不遮挡背景 */
+            background-color: rgba(255, 255, 255, 0);
+            border: 2px solid deeppink;
+        }
+
+        h2 {
+            margin-bottom: 24px;
+            font-weight: 600;
+            font-size: 24px;
+            color: #1a73e8;
+        }
+
+        .label {
+            color: deeppink;
+            display: block;
+            text-align: left;
+            font-size: 14px;
+            margin-top: 12px;
+            margin-bottom: 6px;
+            color: darkorange;
+        }
+
+        input[type="file"], input[type="text"], select[type="statusSelect"] {
+            width: 100%;
+            padding: 10px 0px;
+            margin-bottom: 12px;
+            border: 0px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+            font-size: 14px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input[type="file"]:focus, input[type="text"]:focus, select[type="statusSelect"]:focus {
+            border-color: #1a73e8;
+            box-shadow: 0 0 5px rgba(26, 115, 232, 0.3);
+        }
+
+        input[type="file"]::file-selector-button {
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            background: #1a73e8;
+            color: #fff;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        input[type="file"]::file-selector-button:hover {
+            background: #155ab6;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        button {
+            width: 48%;
+            padding: 10px 0;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        button:active {
+            transform: scale(0.97);
+        }
+
+        .submit-btn {
+            background-color: #1a73e8;
+            color: #fff;
+        }
+
+        .submit-btn:hover {
+            background-color: #155ab6;
+        }
+
+        .clear-btn {
+            background-color: #e0e0e0;
+            color: #333;
+        }
+
+        .clear-btn:hover {
+            background-color: #d5d5d5;
+        }
+
+        /* 可选：下拉箭头样式优化（可选） */
+        select.label {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='5'%3E%3Cpath fill='%23999' d='M0 0l5 5 5-5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 0.65rem auto;
+            padding-right: 2rem; /* 给箭头留空间 */
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>中憬科技集团有限公司(替图系统)</h2>
+
+    <label class="label" for="fileInput">📦 压缩包上传</label>
+    <input type="file" id="fileInput" />
+
+    <label class="label" for="photoInput">🖼️ 照片上传</label>
+    <input type="file" id="photoInput" accept="image/*" />
+
+    <label class="label" for="paramInput">🗑️ 删除第几页</label>
+    <input type="text" id="paramInput" placeholder="请输入页码" />
+
+    <label class="label" for="statusSelect">✏️ 选择修改位置</label>
+    <select id="statusSelect">
+        <option value="" disabled selected>请选择修改位置</option>
+        <option value="0">↓ (正下方)</option>
+        <option value="1">↘ (右下角)</option>
+    </select>
+
+    <div class="btn-container">
+        <button class="submit-btn" onclick="submitForm()">上传</button>
+        <button class="clear-btn" onclick="clearForm()">清空</button>
+    </div>
+</div>
+
+<script>
+    function submitForm() {
+        const file = document.getElementById("fileInput").files[0];
+        const photo = document.getElementById("photoInput").files[0];
+        const param = document.getElementById("paramInput").value;
+        const status = document.getElementById("statusSelect").value;
+
+        if (!file) {
+            alert("请选择压缩包文件！");
+            return;
+        }
+
+        if (!photo) {
+            alert("请选择照片文件！");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("photo", photo);
+        formData.append("param", param);
+        formData.append("status", status);
+
+        fetch("/parseDocument", {
+            method: "POST",
+            body: formData
+        }).then(r => r.text())
+            .then(msg => alert("编辑成功: " + msg))
+            .catch(err => alert("编辑失败: " + err));
+    }
+
+    function clearForm() {
+        document.getElementById("fileInput").value = "";
+        document.getElementById("photoInput").value = "";
+        document.getElementById("paramInput").value = "";
+        document.getElementById("statusSelect").value = "";
+    }
+</script>
+</body>
+</html>
+
