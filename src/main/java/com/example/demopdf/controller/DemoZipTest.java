@@ -192,6 +192,10 @@ public class DemoZipTest {
                 PDRectangle mb = page.getMediaBox();
                 int rotation = page.getRotation();
 
+                if(status == 2){
+                    page.setRotation((rotation + 270) % 360);
+                }
+
                 float imgWidth = 0;
                 float imgHeight = 0;
                 float x = 0;
@@ -244,9 +248,26 @@ public class DemoZipTest {
                         }
 
                         //***********************************************右下角
+                    // 先旋转90° 再将图片防止到右下角
+                    } else if (status == 2) {
+                        imgWidth = 509.20f;  // 图片宽度，可按需调整
+                        imgHeight = 90; // 图片高度
+
+                        x = 20F;          // 距离左边 30px，可调
+                        y = 20F;          // 距离底部 30px，可调
+
+                        cs.saveGraphicsState();
+
+                        // 顺时针旋转 90°，旋转中心在图片左下角
+                        Matrix rotation2 = Matrix.getRotateInstance(Math.toRadians(270), x, y);
+                        cs.transform(rotation2);
                     }
 
                     //3.保存绘制图片
+                    if(status == 2){
+                        x = -524;
+                        y = 13;
+                    }
                     cs.drawImage(image, x, y, imgWidth, imgHeight);
                     //4.完全恢复坐标系
                     cs.restoreGraphicsState();
